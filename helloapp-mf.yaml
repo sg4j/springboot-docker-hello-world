@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: springboothw
+  namespace: "springboot"   
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboothw 
+  template:
+    metadata:
+      labels:
+        app: springboothw 
+    spec:
+      containers:
+      - name: springboothw 
+        image: sg4j/springboothw:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboothw
+  namespace: "springboot"   
+  labels:
+        app: springboothw   
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: springboothw
